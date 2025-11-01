@@ -8,6 +8,7 @@ import { Button } from "../components/ui/button";
 
 export function Dashboard() {
     const { loading, notes } = useContext(NoteContext);
+    console.log('notes:', notes)
 
     return (
         <div className="grid gap-2">
@@ -17,8 +18,8 @@ export function Dashboard() {
                 <Button variant="outline">Create Note</Button>
             </NoteForm>
             <div className="grid justify-center sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {loading ?
-                    <div>Loading...</div> :
+                {loading ? <div>Loading...</div> :
+                !notes || notes.length <= 0 ? <div>There are no notes</div> :
                     notes.map(note => (
                         <NoteCard
                             key={note._id}
