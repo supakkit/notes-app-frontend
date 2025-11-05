@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NoteContext } from "./NoteContext";
-import api from "../api/userService";
+import api from "../services/api.js";
 
 
 export function NoteProvider({ children }) {
