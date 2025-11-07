@@ -1,47 +1,72 @@
-import { useParams } from 'react-router-dom';
-import { Button } from '../components/ui/button'
-import { Badge } from "@/components/ui/badge"
-import { useContext } from 'react';
-import { NoteContext } from '../context/NoteContext';
-import { NoteForm } from '../components/NoteForm';
+import { useParams } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { NoteForm } from "../components/NoteForm";
+import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { getPublicNoteByNoteId, getUserNoteByNoteId } from "../services/note.service";
 
 export function Notes() {
-    const { noteId } = useParams();
-    const { notes, handleEditNote } = useContext(NoteContext);
-    
-    const note = notes.find(note => note._id == noteId);
+  const { noteId } = useParams();
+  const { user } = useAuth();
 
-    if (!note) {
-        return <div>Note not found.</div>
+  const [note, setNote] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const isAuth = !!user;
+
+  useEffect(() => {
+    const fetchNote = async (noteId) => {
+      try {
+        setLoading(true);
+        setError('');
+        const data = isAuth ?
+          await getUserNoteByNoteId(noteId) :
+          await getPublicNoteByNoteId(noteId);
+        setNote(data.note);
+      } catch (err) {
+        console.error("Failed to fetch note:", err);
+        setError("Failed to fetch note.");
+      } finally {
+        setLoading(false);
+      }
     }
 
-    return (
-        <div>
-            <div className="p-8 grid gap-2">
-                <h2
-                    className='font-bold text-2xl'
-                >{note.title}</h2>
-                <p
-                    className='text-sm'
-                >{note.content}</p>
-                <div className='flex gap-1 flex-wrap'>
-                    {note.tags.map((tag, index) => (
-                        <Badge
-                            key={index}
-                            className="bg-blue-200 text-blue-600"
-                        >#{tag}</Badge>  
-                    ))}    
-                </div>
-                
-                <div className='grid gap-3 mt-4'>
-                    <p className="font-bold text-sm">📌 Pinned</p>
-                    <NoteForm isEdit={true} noteId={note._id}>
-                        <Button onClick={() => handleEditNote(note)} className="w-fit">Edit Note</Button>
-                    </NoteForm>
-                </div>
-                
-            </div>
-            
+    fetchNote(noteId);
+  }, [noteId, isAuth]);
+
+  if (loading)
+    return <div className="text-center mt-10 text-xl">Loading...</div>;
+
+  if (error)
+    return <div className="text-center mt-10 text-red-500">{error}</div>;
+
+  if (!note) {
+    return <div className="text-center mt-10">Note not found.</div>;
+  }
+
+  return (
+    <div className="grid justify-center">
+      <div className="grid gap-3">
+        <h2 className="font-bold text-3xl pb-1">{note.title}</h2>
+        <p className="text-md">{note.content}</p>
+        <div className="flex gap-1 flex-wrap">
+          {note.tags.map((tag, index) => (
+            <Badge key={index} className="bg-blue-200 text-blue-600 text-sm">
+              #{tag}
+            </Badge>
+          ))}
         </div>
-    );
+        {note.isPinned ? (
+          <p className="font-bold text-sm">📌 Pinned</p>
+        ) : null}
+        {isAuth ? (
+        <NoteForm note={note} setNotes={setNote}>
+          <Button className="w-fit mt-4">Edit Note</Button>
+        </NoteForm>
+        ) : null}
+      </div>
+    </div>
+  );
 }

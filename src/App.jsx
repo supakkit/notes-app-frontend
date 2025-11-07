@@ -6,43 +6,54 @@ import { SignUp } from "./views/SignUp";
 import { Dashboard } from "./views/Dashboard";
 import { Profile } from "./views/Profile";
 import { Notes } from "./views/Notes";
-
+import ProtectedRoute from "./components/ProtectedRoute";
+import NoneAuthRoute from "./components/NoneAuthRoute";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     children: [
       {
-        path: '/',
-        element: <Home />
+        path: "/",
+        element: <Home />,
       },
       {
-        path: 'login',
-        element: <Login />
+        path: "login",
+        element: (
+          <NoneAuthRoute>
+            <Login />
+          </NoneAuthRoute>
+        ),
       },
       {
-        path: 'signup',
-        element: <SignUp />
+        path: "signup",
+        element: (
+          <NoneAuthRoute>
+            <SignUp />
+          </NoneAuthRoute>
+        ),
       },
       {
-        path: 'dashboard',
-        element: <Dashboard />
+        path: "dashboard",
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: 'profile',
-        element: <Profile />
+        path: "profile/:userId",
+        element: <Profile />,
       },
       {
-        path: 'notes/:noteId',
-        element: <Notes />
+        path: "notes/:noteId",
+        element: <Notes />,
       },
-    ]
-  }
+    ],
+  },
 ]);
 
-
-
 export default function App() {
-  return <RouterProvider router={router} />
+  return <RouterProvider router={router} />;
 }

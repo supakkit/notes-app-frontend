@@ -52,7 +52,7 @@ export function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen w-sm">
+    <div className="flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-sm h-fit">
         <CardHeader className="text-center">
           <CardTitle className="font-bold text-2xl">
@@ -103,6 +103,7 @@ export function Login() {
                 />
                 <div className="flex gap-2">
                   <Checkbox
+                    id="showPassword"
                     checked={checked}
                     onCheckedChange={() => setChecked(checked ? false : true)}
                   />
