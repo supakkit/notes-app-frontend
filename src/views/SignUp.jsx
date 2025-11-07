@@ -16,10 +16,10 @@ import { signupService } from "../services/auth.service";
 import { useAuth } from "../hooks/useAuth";
 
 const defaultSignupForm = {
-    fullName: "",
-    email: "",
-    password: "",
-  };
+  fullName: "",
+  email: "",
+  password: "",
+};
 
 export function SignUp() {
   const { setUser } = useAuth();
@@ -30,18 +30,19 @@ export function SignUp() {
 
   const navigate = useNavigate();
 
-
   const handleSignup = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const data = await signupService(signupForm);
       setUser(data.user);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
       console.error("Failed to signup:", err);
-      setError( err?.response?.data?.message || "Signup failed. Please try again.");
+      setError(
+        err?.response?.data?.message || "Signup failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -115,7 +116,7 @@ export function SignUp() {
                 <Label htmlFor="showPassword">Show password</Label>
               </div>
             </div>
-            <Button type="submit" className="w-full" disabled={loading} >
+            <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing up..." : "Sign Up"}
             </Button>
           </CardContent>
