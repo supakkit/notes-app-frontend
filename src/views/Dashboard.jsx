@@ -179,7 +179,7 @@ export function Dashboard() {
       {loading ? (
         <div className="text-center mt-10 text-lg">Loading...</div>
       ) : !notes || !notes[0] ? (
-        <div className="text-center mt-10 text-lg">There are no notes</div>
+        <div className="text-center mt-10 text-lg">There are no notes.</div>
       ) : (
         <div className="grid justify-center sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {notes.map((note) => (
