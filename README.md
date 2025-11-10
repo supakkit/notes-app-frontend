@@ -1,4 +1,4 @@
-# React Notes App
+# React Notes App (Frontend)
 
 A modern **React** frontend for the **Notes App**, allowing users to create, view, and manage notes with authentication and **AI-powered summaries**.  
 Built with **Vite**, **TailwindCSS**, and **Shadcn UI components**, this frontend seamlessly integrates with the [Notes App Backend](https://github.com/supakkit/notes-app-backend.git).
@@ -37,7 +37,7 @@ Built with **Vite**, **TailwindCSS**, and **Shadcn UI components**, this fronten
 
 ```bash
 git clone https://github.com/supakkit/notes-app-frontend.git
-cd react-notes-app
+cd notes-app-frontend
 ```
 
 ### 2. Install dependencies
